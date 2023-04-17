@@ -1,8 +1,11 @@
 import { addDoc, collection } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
-import { auth, db } from '../../Config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db, storage } from '../../Config';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button, Text } from '@chakra-ui/react';
 
 
 export default function Register() {
@@ -11,6 +14,9 @@ export default function Register() {
         email: "",
         password: "",
     });
+
+    const [images, setImages] = useState();
+    const navigate = useNavigate();
 
 
     const handleChange = (e) => {
@@ -22,22 +28,57 @@ export default function Register() {
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Perform form submission logic here
-        console.log("Form data submitted:", formData);
 
         createUserWithEmailAndPassword(auth, formData.email, formData.password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 const user = userCredential.user;
-                
+
+                const mountainImagesRef = ref(storage, `AuthImages/${images.name}`);
+
+                await uploadBytes(mountainImagesRef, images).then((snapshot) => {
+                    console.log('Uploaded a blob or file!');
+                });
+
+                await getDownloadURL(ref(storage, mountainImagesRef))
+                    .then(async (url) => {
+                        console.log(url)
+
+                        await updateProfile(auth.currentUser, {
+                        photoURL: url
+                        }).then(() => {
+                            addDb(url);
+                            navigate("/")
+                        }).catch((error) => {
+                            
+                        });
+                        
+                    })
+                    .catch((error) => {
+                    });
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-               
+
             });
+
+
+
     };
+
+
+    const addDb = async (url) => {
+        const docRef = await addDoc(collection(db, "Users"), {
+            name: formData.username,
+            email: formData.email,
+            Profile: url
+        });
+        console.log("Document written with ID: ", docRef.id);
+
+    }
+
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -110,12 +151,32 @@ export default function Register() {
                             </div>
                         </div>
                     </div>
-                    <button
+
+                    <div className="mb-4">
+                        <label
+                            htmlFor="password"
+                            className="block text-gray-700 font-semibold mb-2"
+                        >
+                            Profile Image
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="file"
+                                id="password"
+                                onChange={(e) => setImages(e.target.files[0])}
+                                className="w-full border border-gray-300 rounded-md py-2 pl-2 pr-4 focus:outline-none focus:border-blue-500"
+                            />
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <Text> If you have and account <Link to="/login">Login</Link> </Text>
+                    </div>
+                    <Button
                         type="submit"
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-black font-semibold py-2 px-4 rounded-md transition duration-300"
+                        className="w-full  hover:bg-blue-600 text-black font-semibold py-2 px-4 rounded-md transition duration-300"
                     >
                         Register
-                    </button>
+                    </Button>
                 </form>
             </div>
         </div>

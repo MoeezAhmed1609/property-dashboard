@@ -15,13 +15,20 @@ import SignUp from './pages/Authentication/SignUp'
 import Login from './pages/Authentication/Login'
 import Register from './pages/Authentication/Register'
 import User from './pages/User'
+import { Provider, useSelector } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistor, store } from './Redux/Store'
+import useAuthState from './hooks/useAuthState'
+import AddProperty from './pages/AddProperty'
+
 
 const App = () => {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+
 
   const preloader = document.getElementById('preloader')
 
-  if(preloader) {
+  if (preloader) {
     setTimeout(() => {
       preloader.style.display = 'none'
       setLoading(false)
@@ -35,23 +42,28 @@ const App = () => {
   return (
     !loading && (
       <>
-        <Routes>
-          <Route  path='/' element={<Analytics />} />
-          <Route path='/calendar' element={<Calendar />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/forms/form-elements' element={<FormElements />} />
-          <Route path='/forms/form-layout' element={<FormLayout />} />
-          <Route path='/tables' element={<Tables />} />
-          <Route path='/settings' element={<Settings />} />
-          <Route path='/chart' element={<Chart />} />
-          <Route path='/ui/alerts' element={<Alerts />} />
-          <Route path='/ui/buttons' element={<Buttons />} />
-          <Route path='/auth/signin' element={<SignIn />} />
-          <Route path='/auth/signup' element={<SignUp />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/user' element={<User />} />
-        </Routes>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Routes>
+              <Route path='/' element={useAuthState ? <Analytics /> : <Login />} />
+              <Route path='/calendar' element={<Calendar />} />
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/forms/form-elements' element={<FormElements />} />
+              <Route path='/forms/form-layout' element={<FormLayout />} />
+              <Route path='/tables' element={<Tables />} />
+              <Route path='/settings' element={<Settings />} />
+              <Route path='/chart' element={<Chart />} />
+              <Route path='/ui/alerts' element={<Alerts />} />
+              <Route path='/ui/buttons' element={<Buttons />} />
+              <Route path='/auth/signin' element={<SignIn />} />
+              <Route path='/auth/signup' element={<SignUp />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/user' element={<User />} />
+              <Route path='/addproperty' element={<AddProperty />} />
+            </Routes>
+          </PersistGate>
+        </Provider>
       </>
     )
   )
