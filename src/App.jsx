@@ -36,7 +36,7 @@ const App = () => {
     !loading && (
       <>
         <Routes>
-          <Route exact path='/' element={<Analytics />} />
+          <Route  path='/' element={<Analytics />} />
           <Route path='/calendar' element={<Calendar />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/forms/form-elements' element={<FormElements />} />
