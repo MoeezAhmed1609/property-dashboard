@@ -9,7 +9,7 @@ import { BsFillHouseAddFill } from "react-icons/bs"
 
 const AddProperty = () => {
     return (
-        <DefaultLayout>
+      
             <Box className='mx-auto max-w-270'>
                 <Breadcrumb pageName='AddProperty' />
                 <Box className='grid grid-cols-5 gap-8'>
@@ -381,7 +381,7 @@ const AddProperty = () => {
                     </Box>
                 </Box>
             </Box>
-        </DefaultLayout>
+    
     )
 }
 

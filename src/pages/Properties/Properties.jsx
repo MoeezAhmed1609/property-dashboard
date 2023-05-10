@@ -2,6 +2,8 @@ import React from 'react'
 import DefaultLayout from '../../layout/DefaultLayout'
 import TabsComponent from '../../components/TabsComponent'
 import { TabPanel } from 'react-tabs'
+import AddNewProperty from './Components/AddNewProperty'
+import AddProperty from '../AddProperty'
 
 
 export default function Properties() {
@@ -22,6 +24,9 @@ export default function Properties() {
                         </div>
                     </div>
                 </div>
+                </TabPanel>
+                <TabPanel>
+                    <AddProperty />
                 </TabPanel>
                
             </TabsComponent>

@@ -5,13 +5,6 @@ const NavData = [
         link: '/user',
         icon: AiOutlineUser,
     },
-
-    {
-        name: "AddProperty",
-        link: '/addproperty',
-        icon: AiOutlinePropertySafety,
-    },
-    
     {
         name: "Properties",
         link: '/properties',

@@ -19,7 +19,6 @@ import { Provider, useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, store } from './Redux/Store'
 import useAuthState from './hooks/useAuthState'
-import AddProperty from './pages/AddProperty'
 import Properties from './pages/Properties/Properties'
 import Testimonials from './pages/Testimonial'
 
@@ -62,7 +61,6 @@ const App = () => {
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/user' element={<User />} />
-              <Route path='/addproperty' element={<AddProperty />} />
               <Route path='/properties' element={<Properties />} />
               <Route path='/testimonial' element={<Testimonials />} />
             </Routes>
