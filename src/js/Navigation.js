@@ -11,6 +11,18 @@ const NavData = [
         link: '/addproperty',
         icon: AiOutlinePropertySafety,
     },
+    
+    {
+        name: "Properties",
+        link: '/properties',
+        icon: AiOutlinePropertySafety,
+    },
+    {
+        name: "Testimonials",
+        link: '/testimonial',
+        icon: AiOutlinePropertySafety,
+    },
+
 
 ]
 export default NavData;
