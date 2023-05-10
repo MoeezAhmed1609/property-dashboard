@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import userThree from '../../images/user/user-03.png';
 import Breadcrumb from '../../components/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { Box, Text } from '@chakra-ui/react';
 import { GrOverview } from "react-icons/gr"
 import { BsFillHouseAddFill } from "react-icons/bs"
+import { storage } from '../../Config';
+import { ref } from 'firebase/storage';
 
 
 const AddProperty = () => {
+    const [images,setImages] = useState();
+
+    useEffect(()=>{
+        console.log(images)
+    },[])
     return (
       
             <Box className='mx-auto max-w-270'>
@@ -320,7 +327,7 @@ const AddProperty = () => {
                                     >
                                         <input
                                             type='file'
-                                            accept='image/*'
+                                            onChange={(e)=>setImages(e.target.files[0])}
                                             className='absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none'
                                         />
                                         <Box className='flex flex-col items-center justify-center space-y-3'>
