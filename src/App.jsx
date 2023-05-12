@@ -47,7 +47,7 @@ const App = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Routes>
-              <Route path='/' element={useAuthState ? <Analytics /> : <Login />} />
+              <Route path='/Admin' element={useAuthState ? <Analytics /> : <Login />} />
               <Route path='/calendar' element={<Calendar />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='/forms/form-elements' element={<FormElements />} />
