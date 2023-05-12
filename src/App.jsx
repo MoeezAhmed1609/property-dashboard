@@ -21,6 +21,7 @@ import { persistor, store } from './Redux/Store'
 import useAuthState from './hooks/useAuthState'
 import Properties from './pages/Properties/Properties'
 import Testimonials from './pages/Testimonial'
+import PropertyView from './pages/PropertyView'
 
 
 const App = () => {
@@ -63,6 +64,7 @@ const App = () => {
               <Route path='/user' element={<User />} />
               <Route path='/properties' element={<Properties />} />
               <Route path='/testimonial' element={<Testimonials />} />
+              <Route path='/Single' element={<PropertyView />} />
             </Routes>
           </PersistGate>
         </Provider>
