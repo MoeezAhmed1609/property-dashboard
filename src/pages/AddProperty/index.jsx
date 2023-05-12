@@ -5,16 +5,107 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { Box, Text } from '@chakra-ui/react';
 import { GrOverview } from "react-icons/gr"
 import { BsFillHouseAddFill } from "react-icons/bs"
-import { storage } from '../../Config';
-import { ref } from 'firebase/storage';
+import { db, storage } from '../../Config';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { addDoc, collection } from 'firebase/firestore';
 
 
 const AddProperty = () => {
     const [images,setImages] = useState();
+    const [urls,seturls] = useState([]);
+    const [propertyName,setpropertyName] = useState();
+    const [price,setPrice] = useState();
+    const [overview,setOverview] = useState();
+    const [propertyType,setPropertyType] = useState();
+    const [LivingSpace,setLivingSpace] = useState();
+    const [BedRoom,setBedRoom] = useState();
+    const [Bathroom,setBathroom] = useState();
+    const [Location,setLocation] = useState();
+    const [pool,setPool] = useState();
+    const [userName,setuserName] = useState();
+    const [facility,setfacility] = useState();
 
-    useEffect(()=>{
+
+
+
+    const PhotoSave = async (event) =>{
+        event.preventDefault();
         console.log(images)
-    },[])
+
+
+        console.log(images)
+        var urlsPush = [...urls]
+        var reference = []
+    
+        for (var i = 0; i < images.length; i++) {
+          const storageRef = ref(storage, `PropertyImages/${images[i].name}`);
+          reference.push(storageRef)
+          await uploadBytes(storageRef, images[i]).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+          });
+        }
+    
+        for (var i = 0; i < reference.length; i++) {
+          await getDownloadURL(ref(storage, reference[i]))
+            .then((url) => {
+              urlsPush.push(url)
+            })
+            .catch((error) => {
+    
+            });
+    
+        }
+        console.log(urlsPush)
+        seturls(urlsPush)
+
+        if(!urlsPush) {
+            console.log("Some Error Occur")
+            return
+        }
+
+       
+    }
+
+
+
+    const HandeSubmitForm = async (event) =>{
+        event.preventDefault();
+        if(!urls) {
+            console.log("Some Error")
+            return;
+        }
+
+        console.log(propertyName);
+        console.log(price);
+        console.log(overview);
+        console.log(propertyType);
+        console.log(Bathroom);
+        console.log(LivingSpace);
+        console.log(BedRoom);
+        console.log(Location);
+        console.log(pool);
+        console.log(userName);
+        console.log(facility);
+        console.log(urls);
+
+        const docRef = await addDoc(collection(db, "properties"), {
+            Property_Name: propertyName,
+            Property_Price:price,
+            Overview:overview,
+            Property_Type:propertyType,
+            Propert_Bathroom:Bathroom,
+            Propert_Living_space:LivingSpace,
+            property_BedRoom:BedRoom,
+            property_Location:Location,
+            property_pool:pool,
+            property_userName:userName,
+            property_facility:facility,
+            property_urls:urls
+          });
+          console.log("Document written with ID: ", docRef.id);
+
+    }
+
     return (
       
             <Box className='mx-auto max-w-270'>
@@ -28,7 +119,7 @@ const AddProperty = () => {
                                 </Text>
                             </Box>
                             <Box className='p-7'>
-                                <form action='#'>
+                                <form onSubmit={HandeSubmitForm}>
                                     <Box className='mb-5.5 flex flex-col gap-5.5 sm:flex-row'>
                                         <Box className='w-full sm:w-1/2'>
                                             <label
@@ -46,6 +137,7 @@ const AddProperty = () => {
                                                     type='text'
                                                     name='fullName'
                                                     id='fullName'
+                                                    onChange={(e)=>setpropertyName(e.target.value)}
                                                     placeholder='Enter Property Name'
                                                 />
                                             </Box>
@@ -62,7 +154,7 @@ const AddProperty = () => {
                                                 className='w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
                                                 type='text'
                                                 name='phoneNumber'
-                                                id='phoneNumber'
+                                                onChange={(e)=>setPrice(e.target.value)}
                                                 placeholder='Enter Price'
                                                 defaultValue='$00'
                                             />
@@ -84,7 +176,7 @@ const AddProperty = () => {
                                                 className='w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
                                                 type='email'
                                                 name='emailAddress'
-                                                id='emailAddress'
+                                                onChange={(e)=>setOverview(e.target.value)}
                                                 placeholder='Enter Overview'
                                                
                                             />
@@ -107,6 +199,7 @@ const AddProperty = () => {
                                                     type='text'
                                                     name='fullName'
                                                     id='fullName'
+                                                    onChange={(e)=>setPropertyType(e.target.value)}
                                                     placeholder='Enter Property Name'
                                                 />
                                             </Box>
@@ -123,7 +216,7 @@ const AddProperty = () => {
                                                 className='w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
                                                 type='text'
                                                 name='phoneNumber'
-                                                id='phoneNumber'
+                                                onChange={(e)=>setBathroom(e.target.value)}
                                                 placeholder='Enter Price'
                                                 defaultValue='$00'
                                             />
@@ -146,6 +239,7 @@ const AddProperty = () => {
                                                     type='text'
                                                     name='fullName'
                                                     id='fullName'
+                                                    onChange={(e)=>setLivingSpace(e.target.value)}
                                                     placeholder='Enter Property Name'
                                                 />
                                             </Box>
@@ -162,7 +256,7 @@ const AddProperty = () => {
                                                 className='w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
                                                 type='text'
                                                 name='phoneNumber'
-                                                id='phoneNumber'
+                                                onChange={(e)=>setBedRoom(e.target.value)}
                                                 placeholder='Enter Price'
                                                 defaultValue='$00'
                                             />
@@ -185,6 +279,7 @@ const AddProperty = () => {
                                                     type='text'
                                                     name='fullName'
                                                     id='fullName'
+                                                    onChange={(e)=>setLocation(e.target.value)}
                                                     placeholder='Enter Property Name'
                                                 />
                                             </Box>
@@ -201,7 +296,7 @@ const AddProperty = () => {
                                                 className='w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
                                                 type='text'
                                                 name='phoneNumber'
-                                                id='phoneNumber'
+                                                onChange={(e)=>setPool(e.target.value)}
                                                 placeholder='Enter Price'
                                                 defaultValue='$00'
                                             />
@@ -219,9 +314,9 @@ const AddProperty = () => {
                                             className='w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
                                             type='text'
                                             name='Username'
-                                            id='Username'
+                                            onChange={(e)=>setuserName(e.target.value)}
                                             placeholder='devidjhon24'
-                                            defaultValue='devidjhon24'
+
                                         />
                                     </Box>
 
@@ -230,7 +325,7 @@ const AddProperty = () => {
                                             className='mb-3 block text-sm font-medium text-black dark:text-white'
                                             htmlFor='Username'
                                         >
-                                            BIO
+                                            Facilities And Location
                                         </label>
                                         <Box className='relative'>
                                             <span className='absolute left-4.5 top-4'>
@@ -269,8 +364,8 @@ const AddProperty = () => {
                                                 name='bio'
                                                 id='bio'
                                                 rows='6'
+                                                onChange={(e)=>setfacility(e.target.value)}
                                                 placeholder='Write your bio here'
-                                                defaultValue='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet.'
                                             ></textarea>
                                         </Box>
                                     </Box>
@@ -301,7 +396,7 @@ const AddProperty = () => {
                                 </h3>
                             </Box>
                             <Box className='p-7'>
-                                <form action='#'>
+                                <form onSubmit={PhotoSave}>
                                     <Box className='mb-4 flex items-center gap-3'>
                                         <Box className='h-14 w-14 rounded-full'>
                                             <img src={userThree} alt='User' />
@@ -327,7 +422,8 @@ const AddProperty = () => {
                                     >
                                         <input
                                             type='file'
-                                            onChange={(e)=>setImages(e.target.files[0])}
+                                            onChange={(e)=>setImages(e.target.files)}
+                                            multiple
                                             className='absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none'
                                         />
                                         <Box className='flex flex-col items-center justify-center space-y-3'>
