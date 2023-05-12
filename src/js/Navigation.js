@@ -15,6 +15,11 @@ const NavData = [
         link: '/testimonial',
         icon: AiOutlinePropertySafety,
     },
+    {
+        name:"Blog",
+        link: '/blog',
+        icon: AiOutlinePropertySafety,
+    }
 
 
 ]

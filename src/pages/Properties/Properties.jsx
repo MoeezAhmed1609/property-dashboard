@@ -4,7 +4,7 @@ import TabsComponent from '../../components/TabsComponent'
 import { TabPanel } from 'react-tabs'
 import AddNewProperty from './Components/AddNewProperty'
 import AddProperty from '../AddProperty'
-import { collection, onSnapshot, query } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, query } from 'firebase/firestore'
 import { db } from '../../Config'
 import { Box, Image, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
@@ -24,7 +24,6 @@ export default function Properties() {
                 cities.push({ id: doc.id, ...doc.data() });
             });
             setProperties(cities)
-            console.log(Testimonial);
         });
     }
     useEffect(() => {
@@ -38,6 +37,10 @@ export default function Properties() {
     }
 
 
+    const HandleDelete = async (id) =>{
+        await deleteDoc(doc(db, "properties", id));
+    }
+
     return (
         <DefaultLayout>
             <TabsComponent Header={['Properties', 'Add New']}>
@@ -46,13 +49,13 @@ export default function Properties() {
                         {
                             Properties.map((item) => {
                                 return (
-                                    <Box onClick={()=>HandleNavigateProperty(item)} className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" >
-                                        <Image className="h-48 w-full object-cover" src={item.property_urls[0]} alt="[Property Name]" />
+                                    <Box  className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" >
+                                        <Image onClick={()=>HandleNavigateProperty(item)} className="h-48 w-full object-cover" src={item.property_urls[0]} alt="[Property Name]" />
                                         <Box className="p-6">
-                                            <Text as="h2" className="text-lg font-semibold text-gray-900 mb-2">{item.Property_Name}</Text>
-                                            <p className="text-gray-700 text-base mb-4">{item.Overview}</p>
+                                            <Text as="h2" onClick={()=>HandleNavigateProperty(item)} className="text-lg font-semibold text-gray-900 mb-2">{item.Property_Name}</Text>
+                                            <p onClick={()=>HandleNavigateProperty(item)} className="text-gray-700 text-base mb-4">{item.Overview}</p>
                                             <Box className="flex justify-end">
-                                                <button className="px-4 py-2 mr-2 bg-red-500 text-black rounded hover:bg-red-600">Delete</button>
+                                                <button onClick={()=>HandleDelete(item.id)} className="px-4 py-2 mr-2 bg-red-500 text-black rounded hover:bg-red-600">Delete</button>
                                                 <button className="px-4 py-2 bg-cyan-500 text-black rounded hover:bg-blue-600">Update</button>
                                             </Box>
                                         </Box>

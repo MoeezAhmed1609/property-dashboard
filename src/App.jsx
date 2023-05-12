@@ -22,6 +22,7 @@ import useAuthState from './hooks/useAuthState'
 import Properties from './pages/Properties/Properties'
 import Testimonials from './pages/Testimonial'
 import PropertyView from './pages/PropertyView'
+import Blog from './pages/Blog'
 
 
 const App = () => {
@@ -47,7 +48,7 @@ const App = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Routes>
-              <Route path='/Admin' element={useAuthState ? <Analytics /> : <Login />} />
+              <Route path='/' element={useAuthState ? <Analytics /> : <Login />} />
               <Route path='/calendar' element={<Calendar />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='/forms/form-elements' element={<FormElements />} />
@@ -65,6 +66,7 @@ const App = () => {
               <Route path='/properties' element={<Properties />} />
               <Route path='/testimonial' element={<Testimonials />} />
               <Route path='/Single' element={<PropertyView />} />
+              <Route path='/blog' element={<Blog />} />
             </Routes>
           </PersistGate>
         </Provider>
