@@ -3,9 +3,9 @@ import { Tab, TabList, Tabs } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css';
 
 
-export default function TabsComponent({ children, Header }) {
+export default function TabsComponent({ children, Header}) {
     return (
-        <Tabs>
+        <Tabs  >
             <TabList>
                 {
                     Header.map((item) => {

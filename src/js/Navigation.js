@@ -1,4 +1,6 @@
-import { AiOutlineUser, AiOutlinePropertySafety } from "react-icons/ai"
+import { AiOutlineUser,  AiFillContacts } from "react-icons/ai"
+import { FaBlog } from "react-icons/fa"
+import { BsFillHouseAddFill,BsFillChatLeftQuoteFill } from "react-icons/bs"
 const NavData = [
     {
         name: "User",
@@ -8,18 +10,25 @@ const NavData = [
     {
         name: "Properties",
         link: '/properties',
-        icon: AiOutlinePropertySafety,
+        icon: BsFillHouseAddFill,
     },
     {
         name: "Testimonials",
         link: '/testimonial',
-        icon: AiOutlinePropertySafety,
+        icon: BsFillChatLeftQuoteFill,
     },
     {
-        name:"Blog",
+        name: "Blog",
         link: '/blog',
-        icon: AiOutlinePropertySafety,
-    }
+        icon: FaBlog,
+    },
+
+    {
+        name: "contact",
+        link: '/contact',
+        icon: AiFillContacts,
+    },
+
 
 
 ]

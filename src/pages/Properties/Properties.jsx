@@ -6,13 +6,17 @@ import AddNewProperty from './Components/AddNewProperty'
 import AddProperty from '../AddProperty'
 import { collection, deleteDoc, doc, onSnapshot, query } from 'firebase/firestore'
 import { db } from '../../Config'
-import { Box, Image, Text } from '@chakra-ui/react'
+import { Box,  Image, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { SingleProperty } from '../../Redux/Action/SingleProperty'
+import { UpdatePropertyAction } from '../../Redux/Action/UpdatePropertyAction'
+import Modal from '../../ReUseableComponent/Modal'
 
 export default function Properties() {
     const [Properties, setProperties] = useState([]);
+    const [currentIndex,setCurrentIndex] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
@@ -41,9 +45,22 @@ export default function Properties() {
         await deleteDoc(doc(db, "properties", id));
     }
 
+    const HandleUpdate = (item) => {
+        navigate(`/${item.id}`)
+        
+    }
+
+    
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
+    
+
     return (
         <DefaultLayout>
-            <TabsComponent Header={['Properties', 'Add New']}>
+
+
+            <TabsComponent Header={['Properties', 'Add New']} >
                 <TabPanel>
                     <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
                         {
@@ -56,7 +73,7 @@ export default function Properties() {
                                             <p onClick={()=>HandleNavigateProperty(item)} className="text-gray-700 text-base mb-4">{item.Overview}</p>
                                             <Box className="flex justify-end">
                                                 <button onClick={()=>HandleDelete(item.id)} className="px-4 py-2 mr-2 bg-red-500 text-black rounded hover:bg-red-600">Delete</button>
-                                                <button className="px-4 py-2 bg-cyan-500 text-black rounded hover:bg-blue-600">Update</button>
+                                                <button onClick={()=>HandleUpdate(item)} className="px-4 py-2 bg-cyan-500 text-black rounded hover:bg-blue-600">Update</button>
                                             </Box>
                                         </Box>
                                     </Box>
@@ -71,6 +88,12 @@ export default function Properties() {
                 </TabPanel>
 
             </TabsComponent>
+
+
+
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+                            <Text>A</Text>
+            </Modal>
 
         </DefaultLayout>
     )

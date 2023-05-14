@@ -23,6 +23,8 @@ import Properties from './pages/Properties/Properties'
 import Testimonials from './pages/Testimonial'
 import PropertyView from './pages/PropertyView'
 import Blog from './pages/Blog'
+import Contact from './pages/Contact'
+import UpdateProperty from './pages/UpdateProperty'
 
 
 const App = () => {
@@ -67,6 +69,8 @@ const App = () => {
               <Route path='/testimonial' element={<Testimonials />} />
               <Route path='/Single' element={<PropertyView />} />
               <Route path='/blog' element={<Blog />} />
+              <Route path='/contact' element={<Contact />} />
+              <Route path='/:id' element={<UpdateProperty />} />
             </Routes>
           </PersistGate>
         </Provider>

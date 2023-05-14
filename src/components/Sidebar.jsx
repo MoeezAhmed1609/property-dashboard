@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import SidebarLinkGroup from './SidebarLinkGroup'
-import Logo from '../images/logo/logo.svg'
 import { BsChevronCompactDown } from "react-icons/bs"
 import NavData from '../js/Navigation'
-import { Icon } from '@chakra-ui/react'
+import { Icon, Text } from '@chakra-ui/react'
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation()
@@ -62,7 +61,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className='flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5'>
         <NavLink to='/'>
-          <img src={Logo} alt='Logo' />
+          <Text fontSize={30}>Admin Dashboard</Text>
         </NavLink>
 
         <button
