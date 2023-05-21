@@ -20,7 +20,6 @@ export default function BlogForm() {
         const files = event.target.files
         var urlsPush = [...urls]
         var reference = []
-    
         for (var i = 0; i < files.length; i++) {
           const storageRef = ref(storage, `blog/${files[i].name}`);
           reference.push(storageRef)
@@ -38,7 +37,6 @@ export default function BlogForm() {
             .catch((error) => {
     
             });
-    
         }
         setLoading(false)
         console.log(urlsPush)

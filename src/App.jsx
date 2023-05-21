@@ -12,23 +12,20 @@ import Alerts from './pages/UiElements/Alerts'
 import Buttons from './pages/UiElements/Buttons'
 import SignIn from './pages/Authentication/SignIn'
 import SignUp from './pages/Authentication/SignUp'
-import Login from './pages/Authentication/Login'
-import Register from './pages/Authentication/Register'
-import User from './pages/User'
 import { Provider, useSelector } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, store } from './Redux/Store'
 import useAuthState from './hooks/useAuthState'
-import Properties from './pages/Properties/Properties'
-import Testimonials from './pages/Testimonial'
 import PropertyView from './pages/PropertyView'
-import Blog from './pages/Blog'
-import Contact from './pages/Contact'
 import UpdateProperty from './pages/UpdateProperty'
+import useLocalStorage from './hooks/useLocalStorage'
+import {  AboutUsGuide, Blog, Contact, Enquiry, Login, Properties, Register, Team, TeamUpdated, Testimonials, User } from './pages'
+import CityInfo from './pages/CityInfo'
 
 
 const App = () => {
   const [loading, setLoading] = useState(true);
+
 
 
   const preloader = document.getElementById('preloader')
@@ -50,7 +47,7 @@ const App = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Routes>
-              <Route path='/' element={useAuthState ? <Analytics /> : <Login />} />
+              <Route path='/' element={useAuthState ? <Analytics /> : <Logins />} />
               <Route path='/calendar' element={<Calendar />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='/forms/form-elements' element={<FormElements />} />
@@ -71,6 +68,11 @@ const App = () => {
               <Route path='/blog' element={<Blog />} />
               <Route path='/contact' element={<Contact />} />
               <Route path='/:id' element={<UpdateProperty />} />
+              <Route path='/enquiry' element={<Enquiry />} />
+              <Route path='/team' element={<Team />} />
+              <Route path='/team/:id' element={<TeamUpdated />} />
+              <Route path='/about' element={<AboutUsGuide />} />
+              <Route path='/cityinfo' element={<CityInfo />} />
             </Routes>
           </PersistGate>
         </Provider>

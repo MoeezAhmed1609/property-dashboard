@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux'
 import { SingleProperty } from '../../Redux/Action/SingleProperty'
 import { UpdatePropertyAction } from '../../Redux/Action/UpdatePropertyAction'
 import Modal from '../../ReUseableComponent/Modal'
+import LazyLoadImage from '../../ReUseableComponent/LazyLoadImage'
 
 export default function Properties() {
     const [Properties, setProperties] = useState([]);
@@ -67,7 +68,7 @@ export default function Properties() {
                             Properties.map((item) => {
                                 return (
                                     <Box  className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" >
-                                        <Image onClick={()=>HandleNavigateProperty(item)} className="h-48 w-full object-cover" src={item.property_urls[0]} alt="[Property Name]" />
+                                        <LazyLoadImage onClick={()=>HandleNavigateProperty(item)} className="h-48 w-full object-cover" src={item.property_urls[0]} alt="[Property Name]" />
                                         <Box className="p-6">
                                             <Text as="h2" onClick={()=>HandleNavigateProperty(item)} className="text-lg font-semibold text-gray-900 mb-2">{item.Property_Name}</Text>
                                             <p onClick={()=>HandleNavigateProperty(item)} className="text-gray-700 text-base mb-4">{item.Overview}</p>

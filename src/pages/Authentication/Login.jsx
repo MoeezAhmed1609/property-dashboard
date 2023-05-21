@@ -11,6 +11,11 @@ import { Link } from 'react-router-dom';
 
 export default function Login() {
     const dispatch = useDispatch();
+
+        const [Email,setEmail] = useState();
+        const [password,setPassword] = useState();
+ 
+
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -28,9 +33,8 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Perform form submission logic here
         console.log("Form data submitted:", formData);
-        signInWithEmailAndPassword(auth, formData.email, formData.password)
+        signInWithEmailAndPassword(auth, Email, password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
@@ -63,8 +67,8 @@ export default function Login() {
                                 type="email"
                                 name="email"
                                 id="email"
-                                value={formData.email}
-                                onChange={handleChange}
+                                value={Email}
+                                onChange={(e)=>setEmail(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
                                 placeholder="Email"
                             />
@@ -85,8 +89,8 @@ export default function Login() {
                                 type="password"
                                 name="password"
                                 id="password"
-                                value={formData.password}
-                                onChange={handleChange}
+                                value={password}
+                                onChange={(e)=>setPassword(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
                                 placeholder="Password"
                             />

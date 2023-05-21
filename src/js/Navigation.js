@@ -28,6 +28,26 @@ const NavData = [
         link: '/contact',
         icon: AiFillContacts,
     },
+    {
+        name: "Enquiry",
+        link: '/enquiry',
+        icon: AiFillContacts,
+    },
+    {
+        name: "Team",
+        link: '/team',
+        icon: AiFillContacts,
+    },
+    {
+        name: "About",
+        link: '/about',
+        icon: AiFillContacts,
+    },
+    {
+        name: "About City",
+        link: '/cityinfo',
+        icon: AiFillContacts,
+    },
 
 
 
