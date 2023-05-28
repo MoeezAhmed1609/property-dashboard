@@ -44,8 +44,8 @@ const NavData = [
         icon: AiFillContacts,
     },
     {
-        name: "About City",
-        link: '/cityinfo',
+        name: "Content Upload",
+        link: '/content',
         icon: AiFillContacts,
     },
 

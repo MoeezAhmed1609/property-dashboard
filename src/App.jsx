@@ -20,12 +20,12 @@ import PropertyView from './pages/PropertyView'
 import UpdateProperty from './pages/UpdateProperty'
 import useLocalStorage from './hooks/useLocalStorage'
 import {  AboutUsGuide, Blog, Contact, Enquiry, Login, Properties, Register, Team, TeamUpdated, Testimonials, User } from './pages'
-import CityInfo from './pages/CityInfo'
+import ContentUpload from './pages/ContentUpload'
 
 
 const App = () => {
   const [loading, setLoading] = useState(true);
-
+  
 
 
   const preloader = document.getElementById('preloader')
@@ -72,7 +72,7 @@ const App = () => {
               <Route path='/team' element={<Team />} />
               <Route path='/team/:id' element={<TeamUpdated />} />
               <Route path='/about' element={<AboutUsGuide />} />
-              <Route path='/cityinfo' element={<CityInfo />} />
+              <Route path='/content' element={<ContentUpload />} />
             </Routes>
           </PersistGate>
         </Provider>
