@@ -48,6 +48,13 @@ const NavData = [
         link: '/content',
         icon: AiFillContacts,
     },
+    
+    {
+        name: "Dashboard Users",
+        link: '/dash/users',
+        icon: AiFillContacts,
+    },
+
 
 
 

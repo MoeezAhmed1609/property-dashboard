@@ -21,6 +21,8 @@ import UpdateProperty from './pages/UpdateProperty'
 import useLocalStorage from './hooks/useLocalStorage'
 import {  AboutUsGuide, Blog, Contact, Enquiry, Login, Properties, Register, Team, TeamUpdated, Testimonials, User } from './pages'
 import ContentUpload from './pages/ContentUpload'
+import Content from './pages/ContentUpload/Content'
+import DashboardUsers from './pages/DashboardUsers'
 
 
 const App = () => {
@@ -73,6 +75,7 @@ const App = () => {
               <Route path='/team/:id' element={<TeamUpdated />} />
               <Route path='/about' element={<AboutUsGuide />} />
               <Route path='/content' element={<ContentUpload />} />
+              <Route path='/dash/users' element={<DashboardUsers />} />
             </Routes>
           </PersistGate>
         </Provider>
