@@ -7,6 +7,7 @@ import { db, storage } from "../../Config"
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Button } from '@chakra-ui/react';
 import { addDoc, collection } from 'firebase/firestore';
+import { toast } from 'react-toastify';
 
 export default function ContentUpload() {
   const [value, setValue] = useState('');
@@ -51,9 +52,10 @@ export default function ContentUpload() {
       value,
       page,
       key,
-      link
+      link:link ? link : ''
     });
     console.log("Document written with ID: ", docRef.id);
+    toast("Content Added Success !")
   }
 
  
@@ -121,7 +123,7 @@ const ImageDropzone = ({ handleImageUpload }) => {
   return (
     <Dropzone onDrop={handleDrop} accept="image/*" multiple={false}>
       {({ getRootProps, getInputProps }) => (
-        <div {...getRootProps()}>
+        <div {...getRootProps()} className='px-5 py-2 bg-white rounded-md'>
           <input {...getInputProps()} className='cursor-pointer' />
           <p>Upload or Drag File</p>
         </div>

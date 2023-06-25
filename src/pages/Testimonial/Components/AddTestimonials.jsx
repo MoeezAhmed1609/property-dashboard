@@ -3,6 +3,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useState } from 'react'
 import { db, storage } from '../../../Config';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import moment from "moment"
 
 
 export default function AddTestimonials() {
@@ -28,7 +29,7 @@ export default function AddTestimonials() {
                     Title: title,
                     desc:description,
                     img:url,
-                    timestamp: serverTimestamp()
+                    timestamp: moment().format("MMM Do YY")
                 });
                 console.log("Document written with ID: ", docRef.id);
             })

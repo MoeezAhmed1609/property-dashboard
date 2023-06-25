@@ -11,6 +11,11 @@ import UserTable from './UserTable';
 import { useSelector } from 'react-redux';
 import moment from 'moment/moment';
 
+
+
+
+
+
 export default function DashboardUsers() {
     const [isOpen, setisOpen] = useState(false);
     const [tags, setTags] = useState([]);
@@ -62,7 +67,8 @@ export default function DashboardUsers() {
             tags,
             timestamp: moment().calendar()
 
-          });
+        });
+        toast("User Added Successfully!")
     }
 
 
@@ -110,33 +116,33 @@ export default function DashboardUsers() {
         <DefaultLayout>
             <div className="w-full h-screen">
                 <div className="w-full h-[70px] flex justify-between items-center px-10 cursor-pointer">
-                    <Button onClick={() => setisOpen(true)}>Create New User</Button>
-                    <CSVLink data={'user'}>Download Csv</CSVLink>
+                    <Button onClick={() => setisOpen(true)} className='bg-white px-10 py-3 rounded-md text-backgroundbg'>Create New User</Button>
+                    <CSVLink data={'user'} className='bg-white px-10 py-3 rounded-md text-backgroundbg'>Download Csv</CSVLink>
                 </div>
                 <div className="">
                     <UserTable />
                 </div>
             </div>
 
-            <Modal isOpen={isOpen} onClose={onClose} style={{ top: 120, height: 500, overflowY: 'auto', borderRadius: 10 }}>
-                <div className="flex flex-col gap-2 mx-w-[300px]">
+            <Modal isOpen={isOpen} onClose={onClose} style={{ top: 90, height: 550, overflowY: 'auto', borderRadius: 20, }}>
+                <div className="flex flex-col gap-2 mx-w-[300px] overflow-y-auto">
                     <div className="">
                         <label htmlFor="" className='block mb-2 px-2'>Name: </label>
-                        <input type='text' onChange={(e)=>setName(e.target.value)} placeholder='Enter User Name: ' className='w-[300px] px-2 py-3 border-none focus:border-none' />
+                        <input type='text' onChange={(e)=>setName(e.target.value)} placeholder='Enter User Name: ' className='w-[300px] px-2 py-3 border border-gray-300 rounded-md focus:border-none' />
                     </div>
 
                     <div className="">
                         <label htmlFor="" className='block mb-2 px-2'>Phone: </label>
-                        <input type='number' onChange={(e)=>setPhone(e.target.value)} placeholder='Enter Phone: ' className='w-[300px] px-2 py-3 border-none focus:border-none' />
+                        <input type='number' onChange={(e)=>setPhone(e.target.value)} placeholder='Enter Phone: ' className='w-[300px] px-2 py-3 border border-gray-300 rounded-md focus:border-none' />
                     </div>
 
                     <div className="">
                         <label htmlFor="" className='block mb-2 px-2'>Email: </label>
-                        <input type='email' onChange={(e)=>setEmail(e.target.value)} placeholder='Enter Email: ' className='w-[300px] px-2 py-3 border-none focus:border-none' />
+                        <input type='email' onChange={(e)=>setEmail(e.target.value)} placeholder='Enter Email: ' className='w-[300px] px-2 py-3 border border-gray-300 rounded-md focus:border-none' />
                     </div>
                     <div className="">
                         <label htmlFor="" className='block mb-2 px-2'>Password: </label>
-                        <input type='Password' onChange={(e)=>setPassword(e.target.value)} placeholder='Enter Phone: ' className='w-[300px] px-2 py-3 border-none focus:border-none' />
+                        <input type='Password' onChange={(e)=>setPassword(e.target.value)} placeholder='Enter Phone: ' className='w-[300px] px-2 py-3 border border-gray-300 rounded-md focus:border-none' />
                     </div>
 
                     <div className="">
@@ -164,6 +170,7 @@ export default function DashboardUsers() {
 
                 </div>
             </Modal>
+
         </DefaultLayout>
     )
 }
