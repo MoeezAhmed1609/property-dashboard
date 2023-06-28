@@ -1,4 +1,4 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import { auth } from '../../Config';
@@ -31,24 +31,27 @@ export default function Login() {
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        console.log(Email)
+        console.log(password)
         e.preventDefault();
-        console.log("Form data submitted:", formData);
-        signInWithEmailAndPassword(auth, Email, password)
+
+       await signInWithEmailAndPassword(auth, Email, password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                dispatch(LoginState(user))
+                console.log(user)
+                // dispatch(LoginState(user))
                 // ...
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
             });
-
-
-
     };
+
+
+    
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -99,10 +102,10 @@ export default function Login() {
                             </div>
                         </div>
                     </div>
-                    <Text textDecoration={"underline"} paddingBottom={2}>If you not Have account please <Link to="/register">Register</Link> </Text>
+                    <Text textDecoration={"underline"} className='cursor-pointer' paddingBottom={2}>If you not Have account please <Link to="/register">Register</Link> </Text>
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-black font-semibold py-2 px-4 rounded-md transition duration-300"
+                        className="w-full bg-primary hover:bg-blue-600  font-semibold py-2 px-4 rounded-md transition duration-300 text-white"
                     >
                         Login
                     </button>

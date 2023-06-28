@@ -24,6 +24,8 @@ import ContentUpload from './pages/ContentUpload'
 import Content from './pages/ContentUpload/Content'
 import DashboardUsers from './pages/DashboardUsers'
 
+import 'react-modern-drawer/dist/index.css'
+
 
 const App = () => {
   const [loading, setLoading] = useState(true);

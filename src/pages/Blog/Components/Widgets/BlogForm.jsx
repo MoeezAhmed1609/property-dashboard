@@ -1,89 +1,140 @@
 import { Box, Button, FormControl, FormLabel, Input, Text, Textarea } from '@chakra-ui/react'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { db, storage } from '../../../../Config';
 import LoadingModal from '../../../../ReUseableComponent/LoadingModal';
 import { addDoc, collection } from 'firebase/firestore';
+import DefaultLayout from '../../../../layout/DefaultLayout';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import LoadingModal1 from '../../../../ReUseableComponent/LaodingModal1';
+import Dropzone from 'react-dropzone';
+import moment from 'moment/moment';
+
 
 export default function BlogForm() {
-    const [Images,setImages] = useState();
+    const [value, setValue] = useState('');
+    const [page,setPage] = useState();
+    const [key,setKey] = useState();
+    const [link,setLink] = useState();
     const [title,setTitle] = useState();
-    const [desc,setDesc] = useState();
-    const [loading,setLoading] = useState(false);
-    const [urls,setUrls] = useState([]);
-
-    
-
-
-    const PhotoSave = async (event) => {
-        console.log(event.target.files);
-        const files = event.target.files
-        var urlsPush = [...urls]
-        var reference = []
-        for (var i = 0; i < files.length; i++) {
-          const storageRef = ref(storage, `blog/${files[i].name}`);
-          reference.push(storageRef)
-          await uploadBytes(storageRef, files[i]).then((snapshot) => {
-            console.log('Uploaded a blob or file!');
-            setLoading(true)
-          });
-        }
-    
-        for (var i = 0; i < reference.length; i++) {
-          await getDownloadURL(ref(storage, reference[i]))
-            .then((url) => {
-              urlsPush.push(url)
-            })
-            .catch((error) => {
-    
-            });
-        }
-        setLoading(false)
-        console.log(urlsPush)
-        setUrls(urlsPush)
+  
+    const handleImageUpload = (imageUrl) => {
+      console.log(imageUrl)
+      const quill = quillRef.current.getEditor();
+      const range = quill.getSelection(true);
+  
+      quill.insertEmbed(range.index, 'image', {
+        src: imageUrl,
+        alt: 'Image',
+      });
+      setValue(value + `<img src='${imageUrl}' />`)
+    };
+  
+    useEffect(() => {
+      console.log(value)
+    }, [])
+  
+  
+    const quillRef = React.useRef();
+  
+    const modules = {
+      toolbar: [
+        [{ header: [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'image'],
+        ['clean'],
+      ],
+      clipboard: {
+        matchVisual: false,
+      },
+    };
+  
+    const HandleUploadToFirestore = async () =>{
+      const docRef = await addDoc(collection(db, "Blogs"), {
+        value,
+        title,
+        time:moment().format("MMM Do YY")
+        
+      });
+      console.log("Document written with ID: ", docRef.id);
+      toast("Content Added Success !")
     }
-
-
-    const AddBlog = async (e) =>{
-        e.preventDefault()
-        const docRef = await addDoc(collection(db, "blogs"), {
-            title: title,
-            Description: desc,
-            images:urls
-          });
-          console.log("Document written with ID: ", docRef.id);
-    }
-
+  
+   
+  
+  
+    const formats = [
+      'header',
+      'bold',
+      'italic',
+      'underline',
+      'strike',
+      'blockquote',
+      'list',
+      'bullet',
+      'link',
+      'image',
+    ];
 
 
     return (
-        <>
-        {
-            loading && <LoadingModal />
-        }
-        <Box className="container mx-auto p-4 w-full">
-            <Text as="h1" className="text-2xl font-bold mb-4 ">Add New Blog</Text>
-            <form className="max-w-full" onSubmit={AddBlog}>
-                <FormControl className="mb-4">
-                    <FormLabel className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">Title:</FormLabel>
-                    <Input onChange={(e)=>setTitle(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" placeholder="Enter blog title" />
-                </FormControl>
-                <FormControl className="mb-4">
-                    <FormLabel className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">Description:</FormLabel>
-                    <Textarea onChange={(e)=>setDesc(e.target.value)}  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" placeholder="Enter blog description" defaultValue={""} />
-                </FormControl>
-                <FormControl className="mb-4">
-                    <FormLabel className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Images:</FormLabel>
-                    <Input onChange={PhotoSave} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="images" type="file" multiple />
-                </FormControl>
-                <Box className="flex items-center justify-center">
-                    <Button  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                        Add Blog
-                    </Button>
-                </Box>
-            </form>
-        </Box>
-        </>
+         
+            <Box className="container mx-auto p-4 w-full">
+                    <div className="">
+                        <div className="flex w-full py-2 gap-2 lg:flex-row md:flex-col sm:flex-col">
+                            <ImageDropzone handleImageUpload={handleImageUpload} />
+                            <Input onChange={(e)=>setTitle(e.target.value)} placeholder='Enter Title' borderRadius={10} paddingLeft={10}/>
+                            <Button onClick={HandleUploadToFirestore} className='border border-white rounded-md px-4 py-2 bg-white '>Add Data</Button>
+
+                        </div>
+
+                        <ReactQuill
+
+                            ref={(el) => {
+                                quillRef.current = el;
+                            }}
+                            formats={formats} modules={modules} theme="snow" style={{ height: 500, backgroundColor: '#fff' }} value={value} onChange={setValue} />
+
+                    </div>
+                
+            </Box>
 
     )
 }
+
+
+const ImageDropzone = ({ handleImageUpload }) => {
+    const handleDrop = async (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      console.log(file)
+  
+      const storageRef = ref(storage, `content/${file.name}`);
+      await uploadBytes(storageRef, file).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+      });
+      await getDownloadURL(ref(storage, storageRef))
+        .then((url) => {
+          console.log(url)
+          handleImageUpload(url)
+  
+        })
+        .catch((error) => {
+          // Handle any errors
+        });
+  
+  
+    };
+  
+    return (
+      <Dropzone onDrop={handleDrop} accept="image/*" multiple={false}>
+        {({ getRootProps, getInputProps }) => (
+          <div {...getRootProps()} className='px-5 py-2 bg-white rounded-md'>
+            <input {...getInputProps()} className='cursor-pointer' />
+            <p>Upload or Drag File</p>
+          </div>
+        )}
+      </Dropzone>
+    );
+  };

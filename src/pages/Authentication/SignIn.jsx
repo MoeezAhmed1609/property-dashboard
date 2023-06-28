@@ -5,12 +5,34 @@ import LogoDark from '../../images/logo/logo-dark.svg'
 import { Link } from 'react-router-dom'
 import AuthImages from "../../images/AuthImages/AuthImages.svg"
 import { Image, Text } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../Config';
 
 
 const SignIn = () => {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
+  const onSubmit = async (data) => {
+    console.log(data)
+
+   await signInWithEmailAndPassword(auth, data.Email, data.Password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user)
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
+
+
+
   return (
-    <DefaultLayout>
-      <Breadcrumb pageName='Sign In' />
+    <React.Fragment>
       <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
         <div className='flex flex-wrap items-center'>
           <div className='hidden w-full xl:block xl:w-1/2'>
@@ -38,7 +60,7 @@ const SignIn = () => {
                 Sign In to Dashbaord
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='mb-4'>
                   <label className='mb-2.5 block font-medium text-black dark:text-white'>
                     Email
@@ -47,6 +69,7 @@ const SignIn = () => {
                     <input
                       type='email'
                       placeholder='Enter your email'
+                      {...register("Email")}
                       className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                     />
 
@@ -77,6 +100,7 @@ const SignIn = () => {
                   <div className='relative'>
                     <input
                       type='password'
+                      {...register("Password")}
                       placeholder='6+ Characters, 1 Capital letter'
                       className='w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                     />
@@ -163,7 +187,7 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </React.Fragment>
   )
 }
 
