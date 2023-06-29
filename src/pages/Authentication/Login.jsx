@@ -1,20 +1,22 @@
-import { addDoc, collection, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
-import { auth } from '../../Config';
-import {  signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../../Config';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { LoginState } from '../../Redux/Action/LoginState';
 import { Text } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { USERDATA } from '../../Redux/Action/UserData';
 
 
 export default function Login() {
     const dispatch = useDispatch();
 
-        const [Email,setEmail] = useState();
-        const [password,setPassword] = useState();
- 
+    const [Email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const navigate = useNavigate();
+
 
     const [formData, setFormData] = useState({
         email: "",
@@ -36,22 +38,41 @@ export default function Login() {
         console.log(password)
         e.preventDefault();
 
-       await signInWithEmailAndPassword(auth, Email, password)
+        dispatch(LoginState(""))
+
+        await signInWithEmailAndPassword(auth, Email, password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user)
-                // dispatch(LoginState(user))
-                // ...
+
+                getUserData(user)
+                dispatch(LoginState(user))
+                navigate('/')
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+
+                console.log(errorMessage)
             });
     };
 
 
-    
+
+    const getUserData = async (user) => {
+        const docRef = doc(db, "/Dashboard_Users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            console.log({id:doc.id,...docSnap.data()});
+            dispatch(USERDATA({id:doc.id,...docSnap.data()}))
+        } else {
+            // docSnap.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }
+
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -71,7 +92,7 @@ export default function Login() {
                                 name="email"
                                 id="email"
                                 value={Email}
-                                onChange={(e)=>setEmail(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
                                 placeholder="Email"
                             />
@@ -93,7 +114,7 @@ export default function Login() {
                                 name="password"
                                 id="password"
                                 value={password}
-                                onChange={(e)=>setPassword(e.target.value)}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
                                 placeholder="Password"
                             />

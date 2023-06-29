@@ -4,10 +4,13 @@ import SidebarLinkGroup from './SidebarLinkGroup'
 import { BsChevronCompactDown } from "react-icons/bs"
 import NavData from '../js/Navigation'
 import { Icon, Text } from '@chakra-ui/react'
+import { useSelector } from 'react-redux'
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation()
   const { pathname } = location
+
+  const [AuthRoutes,setAuthRoutes] = useState([]);
 
   const trigger = useRef(null)
   const sidebar = useRef(null)
@@ -16,6 +19,38 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   )
+
+  const stateAuth = useSelector(state => state.UserDataReducer.property.AuthScreen.split(" "))
+
+
+  const filterItem = () => {
+    if (stateAuth[0] === 'All') {
+      const filteredArray = NavData.map((item) => item);
+      setAuthRoutes(filteredArray)
+      
+    }
+    else {
+      const filteredArray = NavData.filter((item) => stateAuth.includes(item.name));
+      console.log(filteredArray)
+      setAuthRoutes(filteredArray)
+      return;
+    }
+
+
+  }
+
+  useEffect(()=>{
+    console.log(stateAuth)
+      
+    filterItem()
+    
+  return  () =>{
+    filterItem()
+  }
+  
+  },[])
+  
+
 
   // close on click outside
   useEffect(() => {
@@ -98,7 +133,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <ul className='mb-6 flex flex-col gap-1.5'>
               
             {
-              NavData.map((item)=>{
+              AuthRoutes.map((item)=>{
                 return (
 <li>
                 <NavLink
@@ -107,6 +142,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     'bg-graydark dark:bg-meta-4'
                     }`}
                 >
+                  
                   <Icon as={item.icon} />
                   {item.name}
                 </NavLink>

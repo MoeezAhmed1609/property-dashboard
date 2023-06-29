@@ -7,29 +7,31 @@ import TabsComponent from '../../components/TabsComponent'
 import { TabPanel } from 'react-tabs'
 import AddTestimonials from './Components/AddTestimonials'
 import { db } from '../../Config'
-import { collection, onSnapshot, query } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, query } from 'firebase/firestore'
 
 export default function Testimonials() {
 
-    const [Testimonial,setTestimonial] = useState([]);
+    const [Testimonial, setTestimonial] = useState([]);
 
-    const TestimonialFetch = async () =>{
+    const TestimonialFetch = async () => {
         const q = query(collection(db, "/Testimonials"));
         const unsubscribe = await onSnapshot(q, (querySnapshot) => {
             const cities = [];
             querySnapshot.forEach((doc) => {
-                cities.push(doc.data());
+                cities.push({ id: doc.id, ...doc.data() });
             });
             setTestimonial(cities)
             console.log(Testimonial);
         });
-       
-
     }
 
-    useEffect(()=>{
+    const DeletedSuccess = async (id) => {
+        await deleteDoc(doc(db, "Testimonials", id));
+    }
+
+    useEffect(() => {
         TestimonialFetch()
-    },[])
+    }, [])
 
 
     return (
@@ -41,7 +43,7 @@ export default function Testimonials() {
                         {
                             Testimonial.map((item) => {
                                 return (
-                                    <CardLayout title={item.Title} img={item.img} description={item.desc} />
+                                    <CardLayout title={item.Title} img={item.img} onDelete={()=>DeletedSuccess(item.id)} description={item.desc} />
 
                                 )
                             })

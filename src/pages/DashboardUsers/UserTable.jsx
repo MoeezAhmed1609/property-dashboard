@@ -51,9 +51,9 @@ export default function UserTable() {
                                     <tr className="border-b border-gray-300 hover:bg-gray-100">
 
                                         <td className="py-3 px-6 text-left text-[#ffffff]">{item.name}</td>
-                                        <td className="py-3 px-6 text-left text-[#ffffff]">{item.Email}</td>
+                                        <td className="py-3 px-6 text-left text-[#ffffff]">{item.email}</td>
                                         <td className="py-3 px-6 text-left text-[#ffffff]">{item.phone}</td>
-                                        <td className="py-3 px-6 text-left text-[#ffffff]">{item.tags}</td>
+                                        <td className="py-3 px-6 text-left text-[#ffffff]">{item.AuthScreens}</td>
                                     </tr>
                                 )
                             })

@@ -81,7 +81,7 @@ export default function ContentUpload() {
           <input onChange={(e)=> setPage(e.target.value)} className='border border-white rounded-md py-2 px-2'  placeholder='Enter Page Number: '/>
           <input onChange={(e)=> setKey(e.target.value)} className='border border-white rounded-md py-2 px-2' placeholder='Enter Key Name: '/>
           <input onChange={(e)=> setLink(e.target.value)} className='border border-white rounded-md py-2 px-2' placeholder='Enter Link: '/>
-          <Button onClick={HandleUploadToFirestore} className='border border-white rounded-md'>Add Data</Button>
+          <Button onClick={HandleUploadToFirestore} className='border border-white bg-white rounded-md py-2 px-5'>Add Data</Button>
 
         </div>
 

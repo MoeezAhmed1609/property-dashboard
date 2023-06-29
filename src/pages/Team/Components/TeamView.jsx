@@ -19,7 +19,7 @@ export default function TeamView() {
     const navigate = useNavigate();
 
     const TeamView = () => {
-        const q = query(collection(db, "cities"));
+        const q = query(collection(db, "Team"));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const cities = [];
             querySnapshot.forEach((doc) => {
@@ -32,7 +32,7 @@ export default function TeamView() {
     }
 
     const HandleDelete = async (id) => {
-        await deleteDoc(doc(db, "cities", id));
+        await deleteDoc(doc(db, "Team", id));
     }
     const openModal = (item) => {
         setSingleTeamName(item.name)
@@ -53,7 +53,7 @@ export default function TeamView() {
     // ----------------- UPDATED ---------------------------------------
     const HandleUpdate = async () =>{
 
-        const frankDocRef = doc(db, "cities", updatedID);
+        const frankDocRef = doc(db, "Team", updatedID);
         await updateDoc(frankDocRef, {
             City:SingleTeamCity,
             Desc:SingleTeamDesc,

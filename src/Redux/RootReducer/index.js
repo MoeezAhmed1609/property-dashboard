@@ -4,6 +4,7 @@ import SinglePropertyReducer from "../Reducers/SinglePropertyReducer";
 import UpdatePropertyReducer from "../Reducers/UpdatePropertyReducer";
 import UpdateStateReducer from "../Reducers/UpdateStateReducer"
 import DashReducer from "../Reducers/DashReducer";
+import UserDataReducer from "../Reducers/UserDataReducer";
 
 const rootReducer = combineReducers({
     LoginStateReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     Update:UpdatePropertyReducer,
     UpdateStateReducer,
     DashReducer,
+    UserDataReducer
     
 })
 

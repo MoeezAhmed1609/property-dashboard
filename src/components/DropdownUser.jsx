@@ -1,13 +1,45 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import UserOne from '../images/user/user-01.png'
+import { signOut } from 'firebase/auth'
+import { auth } from '../Config'
+import { useDispatch, useSelector } from 'react-redux'
+import { LoginState } from '../Redux/Action/LoginState'
+import UserDataReducer from '../Redux/Reducers/UserDataReducer'
+import { toast } from 'react-toastify'
+import { USERDATA } from '../Redux/Action/UserData'
 
 const DropdownUser = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const Authuser = useSelector(state => state.LoginStateReducer.login);
+  const Authuser1 = useSelector(state => state.UserDataReducer.property);
+  
 
   const trigger = useRef(null)
   const dropdown = useRef(null)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
+  const HandleLogout = () =>{
+    console.log(' dsa')
+    signOut(auth).then(() => {
+      
+      toast('Logout Success')
+    
+      
+    }).catch((error) => {
+      // An error happened.
+    });
+
+    // dispatch(LoginState(''))
+    // dispatch(USERDATA(''))
+
+
+    navigate('/login')
+  }
+
 
   // close on click outside
   useEffect(() => {
@@ -35,6 +67,9 @@ const DropdownUser = () => {
     return () => document.removeEventListener('keydown', keyHandler)
   })
 
+
+
+
   return (
     <div className='relative'>
       <Link
@@ -45,13 +80,13 @@ const DropdownUser = () => {
       >
         <span className='hidden text-right lg:block'>
           <span className='block text-sm font-medium text-black dark:text-white'>
-            Thomas Anree
+           {Authuser1.name}
           </span>
           <span className='block text-xs'>UX Designer</span>
         </span>
 
         <span className='h-12 w-12 rounded-full'>
-          <img src={UserOne} alt='User' />
+          <img src={Authuser.photoURL} alt='User' />
         </span>
 
         <svg
@@ -153,7 +188,7 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className='flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'>
+        <button onClick={HandleLogout} className='flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'>
           <svg
             className='fill-current'
             width='22'

@@ -10,23 +10,25 @@ export default function AddNew() {
     const [Desc, setDesc] = useState();
     const [Desig, setDesig] = useState();
     const [Image, setImage] = useState();
+    const [Team,setTeam] = useState();
 
 
     const HandleSubmitTeamForm = async (e) => {
         e.preventDefault()
-        const storageRef = ref(storage, `Image/${Image.name}`);
+        const storageRef = ref(storage, `TeamImages/${Image.name}`);
         await uploadBytes(storageRef, Image).then((snapshot) => {
             console.log('Uploaded a blob or file!');
         });
         await getDownloadURL(ref(storage, storageRef))
             .then(async (url) => {
                 // Add a new document with a generated id.
-                const docRef = await addDoc(collection(db, "cities"), {
+                const docRef = await addDoc(collection(db, "Team"), {
                     name: Name,
                     City,
                     Desc,
                     Desig,
-                    img:url
+                    img:url,
+                    Team
 
                 });
                 console.log("Document written with ID: ", docRef.id);
@@ -54,6 +56,11 @@ export default function AddNew() {
                 <div class="form-group">
                     <label for="city">Designation</label>
                     <input  onChange={(e)=>setDesig(e.target.value)}  type="text" id="city" name="city" required />
+                </div>
+                
+                <div class="form-group">
+                    <label for="city">Team Group</label>
+                    <input  onChange={(e)=>setTeam(e.target.value)}  type="text" id="city" name="city" required />
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>

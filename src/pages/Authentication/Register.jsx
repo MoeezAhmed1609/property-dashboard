@@ -1,14 +1,15 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import { auth, db, storage } from '../../Config';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Stack, Text } from '@chakra-ui/react';
+import { Button, IconButton, Stack, Text, Tooltip } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import Drawer from 'react-modern-drawer'
 import NavData from '../../js/Navigation';
+import { AiOutlineFullscreenExit, AiOutlineUserAdd } from "react-icons/ai"
 
 export default function Register() {
     const [formData, setFormData] = useState({
@@ -22,6 +23,8 @@ export default function Register() {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = React.useState(false);
     const [screens, setScreens] = useState([]);
+    const [AuthScreen, setAuthScreen] = useState();
+
 
 
     const toggleDrawer = () => {
@@ -37,12 +40,10 @@ export default function Register() {
         setScreens((prevSelectedValues) => {
             const isValueSelected = prevSelectedValues.includes(value);
             if (isValueSelected) {
-                
-                toast("Successfully Added")
+
                 return prevSelectedValues.filter((item) => item !== value);
             }
             else {
-                toast("Successfully Removed")
             }
             return [...prevSelectedValues, value];
         });
@@ -83,7 +84,7 @@ export default function Register() {
                         await updateProfile(auth.currentUser, {
                             photoURL: url
                         }).then(() => {
-                            addDb(url);
+                            addDb(url, user.uid);
                             navigate("/")
                         }).catch((error) => {
 
@@ -104,16 +105,15 @@ export default function Register() {
     };
 
 
-    const addDb = async (url) => {
-        const docRef = await addDoc(collection(db, "Dashboard_Users"), {
+    const addDb = async (url, id) => {
+        await setDoc(doc(db, "Dashboard_Users", id), {
             name: formData.username,
             email: formData.email,
             Profile: url,
+            AuthScreen,
             Role,
-            AuthScreens:Role === 'User' ? screens : 'All'
 
         });
-        console.log("Document written with ID: ", docRef.id);
 
         toast('Register Success', { draggable: true, theme: 'colored' })
 
@@ -123,7 +123,7 @@ export default function Register() {
     return (
         <>
             <div className="min-h-screen bg-gray-100 flex items-center justify-center bg-primary overflow-y-auto">
-                <div className="bg-white p-5 shadow-md rounded-md w-full max-w-md">
+                <div className="bg-white p-5 shadow-md rounded-md w-full max-w-md max-h-[96vh] overflow-y-auto">
                     <h1 className="text-2xl font-bold mb-6">Register</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
@@ -200,13 +200,48 @@ export default function Register() {
                                 Role
                             </label>
                             <div className="relative">
-                                <select onChange={(e) => setRole(e.target.value)} className='w-full py-2 border border-graydark rounded-md px-2 outline-none'>
-                                    <option value={'Please Select Role'}>Please Select Role</option>
-                                    <option value={'Admin'}>Admin</option>
-                                    <option value={'User'}>User</option>
-                                </select>
+                                <input
+                                    type="text"
+                                    value={Role}
+                                    onChange={(e) => setRole(e.target.value)}
+                                    className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
+                                    placeholder="Enter Admin | User"
+                                />
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                                    <AiOutlineUserAdd className="text-gray-500" />
+                                </div>
                             </div>
                         </div>
+                        <div className="mb-4">
+                            <label
+                                htmlFor="password"
+                                className="block text-gray-700 font-semibold mb-2"
+                            >
+                                Auth Screen
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    name="password"
+                                    id="password"
+
+                                    onChange={(e) => setAuthScreen(e.target.value)}
+                                    className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
+                                    placeholder="Enter Screen With Space | All"
+
+                                />
+
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                                    <Tooltip label="eg: Properties About Content | All" aria-label='A tooltip' className='bg-primary text-white px-2 my-2'>
+                                        <IconButton>
+                                            <AiOutlineFullscreenExit className="text-gray-500" />
+                                        </IconButton>
+                                    </Tooltip>
+
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div className="mb-4">
                             <label
@@ -224,12 +259,13 @@ export default function Register() {
                                 />
                             </div>
                         </div>
+
                         <div className="mb-4">
                             <Text> If you have and account <Link to="/login">Login</Link> </Text>
                         </div>
                         <Button
                             type="submit"
-                            className="w-full  hover:bg-blue-600 text-black font-semibold py-2 px-4 rounded-md transition duration-300"
+                            className="w-full bg-primary  hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
                         >
                             Register
                         </Button>

@@ -65,7 +65,7 @@ export default function DashboardUsers() {
             country: "USA",
             Email,
             tags,
-            timestamp: moment().calendar()
+            timestamp: moment().calendar(),
 
         });
         toast("User Added Successfully!")
@@ -116,7 +116,7 @@ export default function DashboardUsers() {
         <DefaultLayout>
             <div className="w-full h-screen">
                 <div className="w-full h-[70px] flex justify-between items-center px-10 cursor-pointer">
-                    <Button onClick={() => setisOpen(true)} className='bg-white px-10 py-3 rounded-md text-backgroundbg'>Create New User</Button>
+                    {/* <Button onClick={() => setisOpen(true)} className='bg-white px-10 py-3 rounded-md text-backgroundbg'>Create New User</Button> */}
                     <CSVLink data={'user'} className='bg-white px-10 py-3 rounded-md text-backgroundbg'>Download Csv</CSVLink>
                 </div>
                 <div className="">
