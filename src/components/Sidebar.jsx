@@ -20,7 +20,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   )
 
-  const stateAuth = useSelector(state => state.UserDataReducer.property.AuthScreen.split(" "))
+  const stateAuth = useSelector(state => state && state.UserDataReducer.property.AuthScreen.split(" "))
 
 
   const filterItem = () => {
@@ -39,15 +39,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   }
 
+  
+  
+
   useEffect(()=>{
     console.log(stateAuth)
-      
     filterItem()
-    
-  return  () =>{
-    filterItem()
-  }
-  
   },[])
   
 

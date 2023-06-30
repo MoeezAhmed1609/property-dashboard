@@ -74,7 +74,7 @@ export default function Properties() {
                                         <LazyLoadImage onClick={() => HandleNavigateProperty(item)} className="h-48 w-full object-cover" src={item.property_urls[0]} alt="[Property Name]" />
                                         <Box className="p-6">
                                             <Text as="h2" onClick={() => HandleNavigateProperty(item)} className="text-lg font-semibold text-gray-900 mb-2">{item.Property_Name}</Text>
-                                            <p onClick={() => HandleNavigateProperty(item)} className="text-gray-700 text-base mb-4">{item.Overview}</p>
+                                            <Text noOfLines={2} onClick={() => HandleNavigateProperty(item)} className="text-gray-700 text-base mb-4">{item.Overview}</Text>
                                             <Box className="flex justify-end">
                                                 <button onClick={() => HandleDelete(item.id)} className="px-4 py-2 mr-2 bg-red-500 text-black rounded hover:bg-red-600">Delete</button>
                                                 <button onClick={() => HandleUpdate(item)} className="px-4 py-2 bg-cyan-500 text-black rounded hover:bg-blue-600">Update</button>

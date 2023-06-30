@@ -12,6 +12,7 @@ import LogoDark from '../../images/logo/logo-dark.svg';
 import Input from '../../ReUseableComponent/Input';
 import Label from '../../ReUseableComponent/Label';
 import Form from '../../ReUseableComponent/Form';
+import LoadingModal from '../../ReUseableComponent/LoadingModal';
 
 
 export default function Login() {
@@ -19,6 +20,7 @@ export default function Login() {
 
     const [Email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
 
@@ -49,8 +51,10 @@ export default function Login() {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user)
-
+                
+                setIsLoading(true)
                 getUserData(user)
+                setIsLoading(false)
                 dispatch(LoginState(user))
                 navigate('/')
             })
@@ -69,18 +73,22 @@ export default function Login() {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            console.log({id:doc.id,...docSnap.data()});
-            dispatch(USERDATA({id:doc.id,...docSnap.data()}))
+            console.log({ id: doc.id, ...docSnap.data() });
+            dispatch(USERDATA({ id: doc.id, ...docSnap.data() }))
         } else {
             // docSnap.data() will be undefined in this case
             console.log("No such document!");
         }
+
+
     }
 
 
     return (
-        <Box className="min-h-screen bg-gray-100 flex items-center bg-boxdark justify-center">
-            <Box className='hidden w-full xl:block xl:w-1/2'>
+        <React.Fragment>
+            {isLoading && <LoadingModal isLoading={isLoading} />}
+            <Box className="min-h-screen bg-gray-100 flex items-center bg-boxdark justify-center">
+                <Box className='hidden w-full xl:block xl:w-1/2'>
                     <Box className='py-17.5 px-26 text-center'>
                         <Link className='mb-5.5 inline-block' to='/'>
                             <Text color={'#fff'}>Admin</Text>
@@ -216,62 +224,64 @@ export default function Login() {
                         </span>
                     </Box>
                 </Box>
-            <Box className="bg-white p-8 shadow-md rounded-md w-full max-w-md">
-                <h1 className="text-2xl font-bold mb-6">Login</h1>
-                <Form onSubmit={handleSubmit}>
-                    <Box className="mb-4">
-                        <Label
-                            htmlFor="email"
-                            className="block text-gray-700 font-semibold mb-2"
-                        >
-                            Email
-                        </Label>
-                        <Box className="relative">
-                            <Input
-                                type="email"
-                                name="email"
-                                id="email"
-                                value={Email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
-                                placeholder="Email"
-                            />
-                            <Box className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                                <FaEnvelope className="text-gray-500" />
+                <Box className="bg-white p-8 shadow-md rounded-md w-full max-w-md">
+                    <h1 className="text-2xl font-bold mb-6">Login</h1>
+                    <Form onSubmit={handleSubmit}>
+                        <Box className="mb-4">
+                            <Label
+                                htmlFor="email"
+                                className="block text-gray-700 font-semibold mb-2"
+                            >
+                                Email
+                            </Label>
+                            <Box className="relative">
+                                <Input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    value={Email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
+                                    placeholder="Email"
+                                />
+                                <Box className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                                    <FaEnvelope className="text-gray-500" />
+                                </Box>
                             </Box>
                         </Box>
-                    </Box>
-                    <Box className="mb-4">
-                        <Label
-                            htmlFor="password"
-                            className="block text-gray-700 font-semibold mb-2"
-                        >
-                            Password
-                        </Label>
-                        <Box className="relative">
-                            <Input
-                                type="password"
-                                name="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
-                                placeholder="Password"
-                            />
-                            <Box className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                                <FaLock className="text-gray-500" />
+                        <Box className="mb-4">
+                            <Label
+                                htmlFor="password"
+                                className="block text-gray-700 font-semibold mb-2"
+                            >
+                                Password
+                            </Label>
+                            <Box className="relative">
+                                <Input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full border border-gray-300 rounded-md py-2 pl-8 pr-4 focus:outline-none focus:border-blue-500"
+                                    placeholder="Password"
+                                />
+                                <Box className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                                    <FaLock className="text-gray-500" />
+                                </Box>
                             </Box>
                         </Box>
-                    </Box>
-                    <Text textDecoration={"underline"} className='cursor-pointer' paddingBottom={2}>If you not Have account please <Link to="/register">Register</Link> </Text>
-                    <button
-                        type="submit"
-                        className="w-full bg-primary hover:bg-blue-600 mt-2  font-semibold py-2 px-4 rounded-md transition duration-300 text-white"
-                    >
-                        Login
-                    </button>
-                </Form>
+                        <Text textDecoration={"underline"} className='cursor-pointer' paddingBottom={2}>If you not Have account please <Link to="/register">Register</Link> </Text>
+                        <button
+                            type="submit"
+                            className="w-full bg-primary hover:bg-blue-600 mt-2  font-semibold py-2 px-4 rounded-md transition duration-300 text-white"
+                        >
+                            Login
+                        </button>
+                    </Form>
+                </Box>
             </Box>
-        </Box>
+        </React.Fragment>
+
     )
 }
