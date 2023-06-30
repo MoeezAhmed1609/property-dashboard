@@ -12,6 +12,7 @@ import { AiOutlineFullscreenExit, AiOutlineUserAdd } from "react-icons/ai"
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Input from '../../ReUseableComponent/Input';
 import RegisterLogo from "../../images/RegisterLogo.png"
+import Label from '../../ReUseableComponent/Label';
 
 
 export default function Register() {
@@ -88,7 +89,7 @@ export default function Register() {
                             photoURL: url
                         }).then(() => {
                             addDb(url, user.uid);
-                            navigate("/")
+                            navigate("/login")
                         }).catch((error) => {
 
                         });

@@ -274,7 +274,7 @@ export default function Login() {
                         <Text textDecoration={"underline"} className='cursor-pointer' paddingBottom={2}>If you not Have account please <Link to="/register">Register</Link> </Text>
                         <button
                             type="submit"
-                            className="w-full bg-primary hover:bg-blue-600 mt-2  font-semibold py-2 px-4 rounded-md transition duration-300 text-white"
+                            className="w-full bg-boxdark hover:bg-blue-600 mt-2  font-semibold py-2 px-4 rounded-md transition duration-300 text-white"
                         >
                             Login
                         </button>
