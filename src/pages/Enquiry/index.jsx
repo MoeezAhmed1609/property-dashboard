@@ -7,27 +7,15 @@ import { SingleProperty } from '../../Redux/Action/SingleProperty';
 import { useNavigate } from 'react-router-dom';
 import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import useFirestoreQuery from '../../hooks/useFirestoreQuery';
 export default function Enquiry() {
 
     const [Enquiry, setEnquiry] = useState([]);
     const [Status, setStatus] = useState();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { data, isLoading } = useFirestoreQuery("/EnquiryForm");
 
-    const PropertiesData = async () => {
-        const q = query(collection(db, "/EnquiryForm"));
-        const unsubscribe = await onSnapshot(q, (querySnapshot) => {
-            const cities = [];
-            querySnapshot.forEach((doc) => {
-                cities.push({ id: doc.id, ...doc.data() });
-            });
-            console.log(cities)
-            setEnquiry(cities)
-        });
-    }
-    useEffect(() => {
-        PropertiesData()
-    }, [])
 
 
 
@@ -124,7 +112,7 @@ export default function Enquiry() {
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {
-                                        Enquiry.filter(item => Status?item.purpose == Status : item).map((item) => {
+                                        data.filter(item => Status?item.purpose == Status : item).map((item) => {
                                             return (
                                                 <tr>
                                                     <td className="px-6 py-4 whitespace-nowrap">

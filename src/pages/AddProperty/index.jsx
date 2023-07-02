@@ -25,6 +25,7 @@ const AddProperty = () => {
     const [pool, setPool] = useState();
     const [userName, setuserName] = useState();
     const [facility, setfacility] = useState();
+    const [County,setCounty] = useState();
     const [AboutProjectAndProperties, setAboutProjectAndProperties] = useState();
     const [PaymentPlanAndInformation, setPaymentPlanAndInformation] = useState();
     const [LoactionPlanIn, setLoactionPlanIn] = useState();
@@ -119,7 +120,8 @@ const AddProperty = () => {
             PaymenyPlan: PaymentPlanAndInformation,
             LocationPlan: LoactionPlanIn,
             DistanceFromMinutes: DistanceInMinutes,
-            DistanceFromKM: DistanceInKM
+            DistanceFromKM: DistanceInKM,
+            County,
         });
         console.log("Document written with ID: ", docRef.id);
 
@@ -164,6 +166,7 @@ const AddProperty = () => {
                                                 />
                                             </Box>
                                         </Box>
+                                       
 
                                         <Box className='w-full sm:w-1/2'>
                                             <label
@@ -223,6 +226,27 @@ const AddProperty = () => {
                                                     id='fullName'
                                                     onChange={(e) => setPropertyType(e.target.value)}
                                                     placeholder='Enter Property Name'
+                                                />
+                                            </Box>
+                                        </Box>
+                                        <Box className='w-full sm:w-1/2'>
+                                            <label
+                                                className='mb-3 block text-sm font-medium text-black dark:text-white'
+                                                htmlFor='fullName'
+                                            >
+                                                County Name
+                                            </label>
+                                            <Box className='relative'>
+                                                <span className='absolute left-4.5 top-4'>
+                                                    <BsFillHouseAddFill />
+                                                </span>
+                                                <Input
+                                                    className='w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary'
+                                                    type='text'
+                                                    name='fullName'
+                                                    id='fullName'
+                                                    onChange={(e) => setCounty(e.target.value)}
+                                                    placeholder='Enter County name'
                                                 />
                                             </Box>
                                         </Box>

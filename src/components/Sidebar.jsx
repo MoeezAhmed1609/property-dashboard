@@ -27,7 +27,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     if (stateAuth[0] === 'All') {
       const filteredArray = NavData.map((item) => item);
       setAuthRoutes(filteredArray)
-      
     }
     else {
       const filteredArray = NavData.filter((item) => stateAuth.includes(item.name));

@@ -14,27 +14,26 @@ import { UpdatePropertyAction } from '../../Redux/Action/UpdatePropertyAction'
 import Modal from '../../ReUseableComponent/Modal'
 import LazyLoadImage from '../../ReUseableComponent/LazyLoadImage'
 import { CSVLink } from 'react-csv'
+import useFirestoreQuery from '../../hooks/useFirestoreQuery'
+import useFirestoreDelete from '../../hooks/useFirestoreDelete'
 
 export default function Properties() {
     const [Properties, setProperties] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { data, isLoading } = useFirestoreQuery("/properties");
+    const {
+        isDeleting,
+        error,
+        isDeleted,
+        setCollectionPath,
+        setDocumentId,
+    } = useFirestoreDelete();
+
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
-    const PropertiesData = async () => {
-        const q = query(collection(db, "/properties"));
-        const unsubscribe = await onSnapshot(q, (querySnapshot) => {
-            const cities = [];
-            querySnapshot.forEach((doc) => {
-                cities.push({ id: doc.id, ...doc.data() });
-            });
-            setProperties(cities)
-        });
-    }
-    useEffect(() => {
-        PropertiesData()
-    }, [])
+
 
 
     const HandleNavigateProperty = (item) => {
@@ -44,7 +43,8 @@ export default function Properties() {
 
 
     const HandleDelete = async (id) => {
-        await deleteDoc(doc(db, "properties", id));
+        setCollectionPath('/properties');
+        setDocumentId(id);
     }
 
     const HandleUpdate = (item) => {
@@ -68,7 +68,7 @@ export default function Properties() {
                 <TabPanel>
                     <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
                         {
-                            Properties.map((item) => {
+                            data.map((item) => {
                                 return (
                                     <Box className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" >
                                         <LazyLoadImage onClick={() => HandleNavigateProperty(item)} className="h-48 w-full object-cover" src={item.property_urls[0]} alt="[Property Name]" />
