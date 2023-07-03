@@ -2,9 +2,12 @@
   "name": "tailadmin-react-free",
   "private": true,
   "version": "1.0.0",
+  "homepage": "https://farooqproprogrammer.github.io/admin",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "build": "vite build",
     "preview": "vite preview"
   },

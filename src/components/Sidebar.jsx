@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import SidebarLinkGroup from './SidebarLinkGroup'
 import { BsChevronCompactDown } from "react-icons/bs"
 import NavData from '../js/Navigation'
 import { Icon, Text } from '@chakra-ui/react'
 import { useSelector } from 'react-redux'
+import useAuthState from '../hooks/useAuthState'
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation()
-  const { pathname } = location
+  const { pathname } = location;
+  const navigate = useNavigate();
+  const isLoggedIn = useAuthState();
+
 
   const [AuthRoutes,setAuthRoutes] = useState([]);
 
@@ -20,16 +24,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   )
 
-  const stateAuth = useSelector(state => state && state.UserDataReducer.property.AuthScreen.split(" "))
+  const stateAuth = useSelector(state => state ? state.UserDataReducer:['All'])
+ 
 
 
   const filterItem = () => {
-    if (stateAuth[0] === 'All') {
+    if (!stateAuth) {
+      navigate('/login');
+      
+    }
+    const AuthState = stateAuth.property.AuthScreen.split(" ")
+    if (AuthState[0] === 'All') {
       const filteredArray = NavData.map((item) => item);
       setAuthRoutes(filteredArray)
+      return;
+    }
+    else if (AuthState.length < 0) {
+      navigate('/login')
     }
     else {
-      const filteredArray = NavData.filter((item) => stateAuth.includes(item.name));
+      const filteredArray = NavData.filter((item) => AuthState.includes(item.name));
       console.log(filteredArray)
       setAuthRoutes(filteredArray)
       return;

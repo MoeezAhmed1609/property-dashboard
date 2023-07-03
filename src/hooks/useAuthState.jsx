@@ -1,18 +1,24 @@
-import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
-export default function useAuthState() {
-    const [isAuthenticated, setIsAuthenticated] = useState(null);
+import { useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const uid = user.uid;
-                setIsAuthenticated(true);
-            } else {
-                setIsAuthenticated(false);
-            }
-        });
-        return () => unsubscribe();
-    }, [])
-    return isAuthenticated;
-}
+const useAuthState = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  return isLoggedIn;
+};
+
+export default useAuthState;

@@ -80,13 +80,13 @@ const DropdownUser = () => {
       >
         <span className='hidden text-right lg:block'>
           <span className='block text-sm font-medium text-black dark:text-white'>
-           {Authuser1.name}
+           {Authuser1 ? Authuser1.name : 'All' }
           </span>
           <span className='block text-xs'>UX Designer</span>
         </span>
 
         <span className='h-12 w-12 rounded-full'>
-          <img src={Authuser.photoURL} alt='User' />
+          <img src={Authuser1 ? Authuser1.photoURL : 'All' } alt='User' />
         </span>
 
         <svg
