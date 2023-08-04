@@ -33,6 +33,9 @@ export default function Properties() {
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
+    useEffect(()=>{
+        console.log(data)
+    },[])
 
 
 
@@ -68,9 +71,9 @@ export default function Properties() {
                 <TabPanel>
                     <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
                         {
-                            data.map((item) => {
+                            data.map((item,index) => {
                                 return (
-                                    <Box className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" >
+                                    <Box key={index} className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" >
                                         <LazyLoadImage onClick={() => HandleNavigateProperty(item)} className="h-48 w-full object-cover" src={item.property_urls[0]} alt="[Property Name]" />
                                         <Box className="p-6">
                                             <Text as="h2" onClick={() => HandleNavigateProperty(item)} className="text-lg font-semibold text-gray-900 mb-2">{item.Property_Name}</Text>

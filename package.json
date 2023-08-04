@@ -2,14 +2,15 @@
   "name": "tailadmin-react-free",
   "private": true,
   "version": "1.0.0",
-  "homepage": "https://farooqproprogrammer.github.io/admin",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "surge-build":"npm run build && cd dist && surge",
+    "surge":"cd dist && surge"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.18",

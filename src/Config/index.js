@@ -9,7 +9,7 @@ const firebaseConfig = {
   projectId: "woven-space-356802",
   storageBucket: "woven-space-356802.appspot.com",
   messagingSenderId: "768236697889",
-  appId: "1:768236697889:web:bae81b3a8680d37e1a6660"
+  appId: "1:768236697889:web:057c3f2b8658d8241a6660"
 };
 
 const app = initializeApp(firebaseConfig);

@@ -11,7 +11,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation()
   const { pathname } = location;
   const navigate = useNavigate();
-  const isLoggedIn = useAuthState();
+  // const isLoggedIn = useAuthState();
 
 
   const [AuthRoutes,setAuthRoutes] = useState([]);
@@ -24,23 +24,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   )
 
-  const stateAuth = useSelector(state => state ? state.UserDataReducer:['All'])
+  const stateAuth = useSelector(state =>  state.UserDataReducer)
  
 
 
   const filterItem = () => {
-    if (!stateAuth) {
+    if (!stateAuth.property) {
       navigate('/login');
-      
+      return;
     }
-    const AuthState = stateAuth.property.AuthScreen.split(" ")
+    const AuthState = stateAuth.property.AuthScreen.split(" ") || ['All']
+
+   
     if (AuthState[0] === 'All') {
       const filteredArray = NavData.map((item) => item);
       setAuthRoutes(filteredArray)
       return;
-    }
-    else if (AuthState.length < 0) {
-      navigate('/login')
     }
     else {
       const filteredArray = NavData.filter((item) => AuthState.includes(item.name));
@@ -48,8 +47,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       setAuthRoutes(filteredArray)
       return;
     }
-
-
   }
 
   
