@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore"
 import { getStorage } from "firebase/storage"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAsNmeaciWfEbyDz9XcRLyw7L9PgaiVZGc",
-  authDomain: "woven-space-356802.firebaseapp.com",
-  projectId: "woven-space-356802",
-  storageBucket: "woven-space-356802.appspot.com",
-  messagingSenderId: "768236697889",
-  appId: "1:768236697889:web:057c3f2b8658d8241a6660"
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PROJECTID,
+  storageBucket: process.env.STORAGEBUKKET,
+  messagingSenderId: process.env.MESSAGINGSENDERID,
+  appId: process.env.APPID,
 };
 
 const app = initializeApp(firebaseConfig);
