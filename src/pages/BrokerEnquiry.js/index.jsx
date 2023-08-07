@@ -16,12 +16,21 @@ import { useNavigate } from "react-router-dom";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import useFirestoreQuery from "../../hooks/useFirestoreQuery";
-export default function Enquiry() {
+import {
+  Menu as DropDown,
+  Typography,
+  MenuItem as DropItem,
+} from "@mui/material";
+import BrokerTable from "./BrokerTable";
+
+export default function BrokerEnquiry() {
   const [Enquiry, setEnquiry] = useState([]);
   const [Status, setStatus] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { data, isLoading } = useFirestoreQuery("/EnquiryForm");
+  const { data, isLoading } = useFirestoreQuery("/BrokerEnquiry");
+
+  console.log({ data });
 
   const HandleDeal = async (id, fieldID) => {
     const washingtonRef = doc(db, "properties", id);
@@ -61,7 +70,17 @@ export default function Enquiry() {
       Active: Active ? !Active : true,
     });
   };
-  console.log({ enquiryDeal: data });
+
+  //   Dropdown Accordion
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <DefaultLayout>
       <div className="mb-2 flex h-[60px] w-full items-center justify-end border-2 border-white pr-2">
@@ -70,6 +89,13 @@ export default function Enquiry() {
             Purpose
           </MenuButton>
           <MenuList className="pl-2">
+            <MenuItem
+              bgColor={"#fff "}
+              onClick={() => setStatus("All")}
+              className="mx-1 rounded-sm border  border-black px-5 py-2"
+            >
+              All
+            </MenuItem>
             <MenuItem
               bgColor={"#fff "}
               onClick={() => setStatus("Rent")}
@@ -91,7 +117,8 @@ export default function Enquiry() {
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="border-gray-200 overflow-hidden border-b shadow sm:rounded-lg">
-              <table className="divide-gray-200 min-w-full divide-y">
+                <BrokerTable rows={data} />
+              {/* <table className="divide-gray-200 min-w-full divide-y">
                 <thead className="bg-gray-50">
                   <tr>
                     <th
@@ -116,7 +143,7 @@ export default function Enquiry() {
                       scope="col"
                       className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     >
-                      Property ID
+                      Total Properties
                     </th>
                     <th
                       scope="col"
@@ -134,17 +161,21 @@ export default function Enquiry() {
                     <th
                       scope="col"
                       className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                    >
-                      Active
-                    </th>
+                    ></th>
                   </tr>
                 </thead>
                 <tbody className="divide-gray-200 divide-y bg-white">
                   {data
-                    .filter((item) => (Status ? item.purpose == Status : item))
-                    .map((item) => {
+                    .filter((item) =>
+                      Status
+                        ? Status === "All"
+                          ? item
+                          : item.purpose == Status
+                        : item
+                    )
+                    .map((item, i) => {
                       return (
-                        <tr>
+                        <tr key={i}>
                           <td className="whitespace-nowrap px-6 py-4">
                             <div className="flex items-center">
                               <div className="ml-4">
@@ -171,7 +202,7 @@ export default function Enquiry() {
                             className="cursor-pointer whitespace-nowrap px-6 py-4"
                           >
                             <div className="text-gray-900 text-sm">
-                              {item.propertyID}
+                              {item.properties.length}
                             </div>
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
@@ -195,24 +226,21 @@ export default function Enquiry() {
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             <span
-                              onClick={() =>
-                                HandleActiveProperty(
-                                  item.propertyID,
-                                  item.id,
-                                  item.Active
-                                )
-                              }
+                              //   onClick={() =>
+                              //     HandleDeal(item.propertyID, item.id)
+                              //   }
                               className="text-green-800 inline-flex cursor-pointer rounded-full  border-2 px-3 text-xs font-semibold leading-5 hover:bg-[#6ee7b7] hover:text-white"
                               style={{ borderColor: "#6ee7b7" }}
+                            //   onClick={handleClick}
                             >
-                              {item.Active + ""}
+                              <ChevronDownIcon />
                             </span>
                           </td>
                         </tr>
                       );
                     })}
                 </tbody>
-              </table>
+              </table> */}
             </div>
           </div>
         </div>

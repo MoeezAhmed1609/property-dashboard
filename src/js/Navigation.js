@@ -37,6 +37,11 @@ const NavData = [
         icon: AiOutlineContacts,
     },
     {
+        name: "Broker Enquiry",
+        link: '/broker-enquiry',
+        icon: AiOutlineContacts,
+    },
+    {
         name: "Team",
         link: '/team',
         icon: AiOutlineTeam,
