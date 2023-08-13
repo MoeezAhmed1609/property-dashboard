@@ -8,12 +8,12 @@ import { CSVLink } from 'react-csv';
 
 export default function User() {
     const [Users, setUsers] = useState([]);
-    
-    
+
+
 
     async function getData() {
         const q = query(collection(db, "Users"));
-        
+
         const unsubscribe = await onSnapshot(q, (querySnapshot) => {
             const cities = [...Users];
             querySnapshot.forEach((doc) => {
@@ -35,12 +35,12 @@ export default function User() {
             <DefaultLayout>
                 <Box className="w-full h-auto ">
                     <div className="w-full h-[70px] flex justify-end items-center px-10 cursor-pointer">
-                    <CSVLink data={Users}>Download Csv</CSVLink>
+                        <CSVLink data={Users}>Download Csv</CSVLink>
                     </div>
 
                     <div className="container mx-auto p-4">
                         <div className="overflow-x-auto">
-                            <table className="table-auto w-full bg-[#ff6b6b] rounded-md">
+                            <table className="table-auto w-full  rounded-md">
                                 <thead>
                                     <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                                         <th className="py-3 px-6 text-left text-[#ffffff]">Image</th>
@@ -50,7 +50,7 @@ export default function User() {
                                         <th className="py-3 px-6 text-left text-[#ffffff]">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody className="text-gray-600 text-sm font-light">
+                                <tbody className="text-sm" style={{ background: 'white', color: '#aeb7c0' }}>
                                     {
                                         Users.map((item) => {
                                             return (
@@ -66,7 +66,7 @@ export default function User() {
                                                     <td className="py-3 px-6 text-left text-[#ffffff]">{item.Email}</td>
                                                     <td className="py-3 px-6 text-left text-[#ffffff]">{item.block ? 'block' : 'Active'}</td>
                                                     <td className="py-3 px-6 text-left text-[#ffffff]">
-                                                        <button className="border border-[#f9c80e] bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                                                        <button className="border border-[#f9c80e] bg-blue-500 hover:bg-blue-700 font-bold py-1 px-2 rounded">
                                                             Action
                                                         </button>
                                                     </td>
